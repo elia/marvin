@@ -5,7 +5,6 @@
 erl_crash.dump
 *.ez
 
-dev.exs
-
-config/prod.exs
+config/*
+!config/config.esx
 lib/bots/
