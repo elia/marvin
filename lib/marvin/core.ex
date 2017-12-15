@@ -61,7 +61,7 @@ defmodule Marvin.Core do
   defp dispatch_message(:direct, message, slack) do
     Application.get_env(:marvin, :bots)
     |> Enum.each(fn(bot) ->
-      IO.inspect(["-- dispatching to:", :direct, bot, bot.is_match?({:direct, message.text})]
+      IO.inspect(["-- dispatching to:", :direct, bot, bot.is_match?({:direct, message.text})])
       if bot.is_match?({:direct, message.text}), do: start_recipe(bot, message, slack)
     end)
   end
@@ -69,7 +69,7 @@ defmodule Marvin.Core do
   defp dispatch_message(:ambient, message, slack) do
     Application.get_env(:marvin, :bots)
     |> Enum.each(fn(bot) ->
-      IO.inspect(["-- dispatching to:", :ambient, bot, bot.is_match?({:ambient, message.text})]
+      IO.inspect(["-- dispatching to:", :ambient, bot, bot.is_match?({:ambient, message.text})])
       if bot.is_match?({:ambient, message.text}), do: start_recipe(bot, message, slack)
     end)
   end
@@ -77,7 +77,7 @@ defmodule Marvin.Core do
   defp dispatch_message(:reaction, message, slack) do
     Application.get_env(:marvin, :bots)
     |> Enum.each(fn(bot) ->
-      IO.inspect(["-- dispatching to:", :reaction, bot, bot.is_match?({:reaction, message.reaction})]
+      IO.inspect(["-- dispatching to:", :reaction, bot, bot.is_match?({:reaction, message.reaction})])
       if bot.is_match?({:reaction, message.reaction}), do: start_recipe(bot, message, slack)
     end)
   end
