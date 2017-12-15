@@ -19,7 +19,7 @@ defmodule Marvin.Mixfile do
     ]
   end
 
-  defp deps do
+  def deps do
     [
       {:earmark, ">= 0.0.0", only: :dev},
       {:ex_doc, "~> 0.10", only: :dev},
