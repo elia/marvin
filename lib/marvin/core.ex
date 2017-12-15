@@ -15,7 +15,7 @@ defmodule Marvin.Core do
 
   def handle_message(_message = %{type: "message", subtype: _}, _slack, state), do: {:ok, state}
   def handle_message(message = %{type: "message"}, slack, state) do
-    IO.inspect(["MESSAGE: ", message.text, message.user, slack.me.id, slack.me.name])
+    IO.inspect(["== MESSAGE: ", message.text, message.user, slack.me.id, slack.me.name])
     if message.user != slack.me.id do
       type = :ambient
       payload = message
@@ -30,7 +30,7 @@ defmodule Marvin.Core do
         String.match?(message.channel, ~r/^D/) ->
           type = :direct
       end
-      IO.inspect(["dispatching MESSAGE: ", type, payload, '---', message.text, message.user, slack.me.id, slack.me.name])
+      IO.inspect(["-- dispatching MESSAGE: ", type, payload, '---', message.text, message.user, slack.me.id, slack.me.name])
       dispatch_message(type, payload, slack)
     end
 
@@ -61,7 +61,7 @@ defmodule Marvin.Core do
   defp dispatch_message(:direct, message, slack) do
     Application.get_env(:marvin, :bots)
     |> Enum.each(fn(bot) ->
-      if bot.is_match?({:direct, message.text}), do: IO.inspect(["dispatching direct to:", bot])
+      IO.inspect(["-- dispatching to:", :direct, bot, bot.is_match?({:direct, message.text})]
       if bot.is_match?({:direct, message.text}), do: start_recipe(bot, message, slack)
     end)
   end
@@ -69,7 +69,7 @@ defmodule Marvin.Core do
   defp dispatch_message(:ambient, message, slack) do
     Application.get_env(:marvin, :bots)
     |> Enum.each(fn(bot) ->
-      if bot.is_match?({:direct, message.text}), do: IO.inspect(["dispatching ambient to:", bot])
+      IO.inspect(["-- dispatching to:", :ambient, bot, bot.is_match?({:ambient, message.text})]
       if bot.is_match?({:ambient, message.text}), do: start_recipe(bot, message, slack)
     end)
   end
@@ -77,7 +77,7 @@ defmodule Marvin.Core do
   defp dispatch_message(:reaction, message, slack) do
     Application.get_env(:marvin, :bots)
     |> Enum.each(fn(bot) ->
-      if bot.is_match?({:direct, message.text}), do: IO.inspect(["dispatching reaction to:", bot])
+      IO.inspect(["-- dispatching to:", :reaction, bot, bot.is_match?({:reaction, message.reaction})]
       if bot.is_match?({:reaction, message.reaction}), do: start_recipe(bot, message, slack)
     end)
   end
