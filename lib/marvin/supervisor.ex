@@ -6,7 +6,7 @@ defmodule Marvin.Supervisor do
   end
 
   def init(:ok) do
-    bots = Application.get_env(:marvin, :bots)
+    _bots = Application.get_env(:marvin, :bots)
     token = Application.get_env(:marvin, :slack_token)
 
     children = [
