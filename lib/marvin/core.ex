@@ -15,7 +15,7 @@ defmodule Marvin.Core do
 
   def handle_message(_message = %{type: "message", subtype: _}, _slack, state), do: {:ok, state}
   def handle_message(message = %{type: "message"}, slack, state) do
-    IO.inspect("MESSAGE: ", message.text)
+    IO.inspect(["MESSAGE: ", message.text])
     if message.user != slack.me.id do
       cond do
         String.match?(message.text, ~r/#{slack.me.id}/) ->
