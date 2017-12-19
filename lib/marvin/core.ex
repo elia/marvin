@@ -29,6 +29,9 @@ defmodule Marvin.Core do
           payload = message |> scrub_indentifier(slack)
         String.match?(message.channel, ~r/^D/) ->
           type = :direct
+        true ->
+          type = :ambient
+          payload = message
       end
       IO.inspect(["-- dispatching MESSAGE: ", type, payload, '---', message.text, message.user, slack.me.id, slack.me.name])
       dispatch_message(type, payload, slack)
