@@ -17,21 +17,15 @@ defmodule Marvin.Core do
   def handle_message(message = %{type: "message"}, slack, state) do
     IO.inspect(["== MESSAGE: ", message.text, message.user, slack.me.id, slack.me.name])
     if message.user != slack.me.id do
-      type = :ambient
-      payload = message
-
-      cond do
+      [type, payload]  = cond do
         String.match?(message.text, ~r/#{slack.me.id}/) ->
-          type = :direct
-          payload = message |> scrub_indentifier(slack)
+          [:direct, (message |> scrub_indentifier(slack))]
         String.match?(message.text, ~r/\b@?#{slack.me.name}\b/) ->
-          type = :direct
-          payload = message |> scrub_indentifier(slack)
+          [:direct, (message |> scrub_indentifier(slack))]
         String.match?(message.channel, ~r/^D/) ->
-          type = :direct
+          [:direct, message]
         true ->
-          type = :ambient
-          payload = message
+          [:ambient, message]
       end
       IO.inspect(["-- dispatching MESSAGE: ", type, payload, '---', message.text, message.user, slack.me.id, slack.me.name])
       dispatch_message(type, payload, slack)
